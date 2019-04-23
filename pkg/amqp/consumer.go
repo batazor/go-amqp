@@ -74,7 +74,7 @@ func (c *Consumer) AnnounceQueue() (<-chan amqp.Delivery, error) {
 	c.queue, err = c.channel.QueueDeclare(
 		c.queueName, // name of the queue
 		false,       // durable
-		true,        // delete when usused
+		false,       // delete when usused
 		false,       // exclusive
 		false,       // noWait
 		nil,         // arguments
