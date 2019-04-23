@@ -69,15 +69,15 @@ func (c *Consumer) Connect() error {
 
 // AnnounceQueue sets the queue that will be listened to for this
 // connection...
-func (c *Consumer) AnnounceQueue() (<-chan amqp.Delivery, error) {
+func (c *Consumer) AnnounceQueue(durable, autoDelete, exclusive, noWait bool, args amqp.Table) (<-chan amqp.Delivery, error) {
 	var err error
 	c.queue, err = c.channel.QueueDeclare(
 		c.queueName, // name of the queue
-		false,       // durable
-		false,       // delete when usused
-		false,       // exclusive
-		false,       // noWait
-		nil,         // arguments
+		durable,     // durable
+		autoDelete,  // delete when usused
+		exclusive,   // exclusive
+		noWait,      // noWait
+		args,        // arguments
 	)
 	if err != nil {
 		return nil, errors.New("Failed to declare a queue: " + err.Error())
