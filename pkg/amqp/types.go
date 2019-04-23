@@ -25,4 +25,17 @@ type Consumer struct {
 	changes      string // exchange that we will bind to
 	exchangeType string // topic, direct, etc...
 	bindingKey   string // routing key that we are using
+
+	cfgAnnounceQueue AnnounceQueue
+}
+
+type AnnounceQueue struct {
+	reserved1  uint16
+	Queue      string
+	Passive    bool
+	Durable    bool
+	Exclusive  bool
+	AutoDelete bool
+	NoWait     bool
+	Arguments  amqp.Table
 }
