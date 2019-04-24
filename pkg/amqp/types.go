@@ -27,7 +27,10 @@ type Consumer struct {
 	bindingKey   string // routing key that we are using
 
 	cfgAnnounceQueue AnnounceQueue
+	Delivery         Delivery
 }
+
+type Delivery <-chan amqp.Delivery
 
 type AnnounceQueue struct {
 	reserved1  uint16
