@@ -43,6 +43,13 @@ func main() {
 		return
 	}
 
+	err = CONSUMER.CreateExchange("test-changes", "topic")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println("Create exchange: ric.smpp.response")
+
 	go CONSUMER.Handle(handler, AMQP_NAME_QUEUE)
 	select {}
 }

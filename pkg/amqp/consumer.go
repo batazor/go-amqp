@@ -52,21 +52,9 @@ func (c *Consumer) Connect() error {
 		return errors.New("Failed to open a channel: " + err.Error())
 	}
 
-	exchangeList := strings.Split(c.changes, ",")
-	for _, echangeName := range exchangeList {
-		name := strings.Trim(echangeName, " ")
-		err = c.channel.ExchangeDeclare(
-			name,
-			c.exchangeType,
-			false,
-			false,
-			false,
-			false,
-			nil,
-		)
-		if err != nil {
-			return errors.New("Failed to declare the Exchange: " + err.Error())
-		}
+	err = c.CreateExchange(c.changes, "")
+	if err != nil {
+		return errors.New("Failed to declare the Exchange: " + err.Error())
 	}
 
 	return nil
@@ -196,6 +184,31 @@ func (c *Consumer) Shutdown() error {
 
 	// wait for handle() to exit
 	return <-c.done
+}
+
+func (c *Consumer) CreateExchange(exchanges string, exchangeType string) error {
+	if exchangeType == "" {
+		exchangeType = c.exchangeType
+	}
+
+	exchangeList := strings.Split(exchanges, ",")
+	for _, echangeName := range exchangeList {
+		name := strings.Trim(echangeName, " ")
+		err := c.channel.ExchangeDeclare(
+			name,
+			exchangeType,
+			false,
+			false,
+			false,
+			false,
+			nil,
+		)
+		if err != nil {
+			return errors.New("Failed to declare the Exchange: " + err.Error())
+		}
+	}
+
+	return nil
 }
 
 func MaxParallelism() int {
