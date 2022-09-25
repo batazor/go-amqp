@@ -1,5 +1,5 @@
 module github.com/batazor/go-amqp
 
-go 1.12
+go 1.19
 
 require github.com/streadway/amqp v1.0.0
